@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="container mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- User Card -->
+     <a href="{% url 'users' %}"> <div class="relative bg-gradient-to-br from-purple-800 to-purple-900 rounded-xl p-8 overflow-hidden text-white shadow-lg hover:scale-105 transition-transform cursor-pointer h-48">
+        <img src="https://img.icons8.com/ios-filled/100/ffffff/user-group-man-man.png" alt="Users Icon" class="absolute top-4 right-4 w-32 h-32 opacity-10" />
+        <h2 class="text-2xl font-semibold relative z-10">Users</h2> 
+      </div></a>
+
+      <!-- Attendance Card -->
+      <div class="relative bg-gradient-to-br from-green-700 to-green-900 rounded-xl p-8 overflow-hidden text-white shadow-lg hover:scale-105 transition-transform cursor-pointer h-48">
+        <img src="https://img.icons8.com/ios-filled/100/ffffff/calendar.png" alt="Attendance Icon" class="absolute top-4 right-4 w-32 h-32 opacity-10" />
+        <h2 class="text-2xl font-semibold relative z-10">Attendance</h2>
+      </div>
+
+      <!-- Salary Card -->
+      <div class="relative bg-gradient-to-br from-red-700 to-red-900 rounded-xl p-8 overflow-hidden text-white shadow-lg hover:scale-105 transition-transform cursor-pointer h-48">
+        <img src="https://img.icons8.com/ios-filled/100/ffffff/money-bag.png" alt="Salary Icon" class="absolute top-4 right-4 w-32 h-32 opacity-10" />
+        <h2 class="text-2xl font-semibold relative z-10">Salary</h2>
+      </div>
+
+      <!-- Messages Card -->
+      <div class="relative bg-gradient-to-br from-blue-700 to-blue-900 rounded-xl p-8 overflow-hidden text-white shadow-lg hover:scale-105 transition-transform cursor-pointer h-48">
+        <img src="https://img.icons8.com/ios-filled/100/ffffff/chat.png" alt="Messages Icon" class="absolute top-4 right-4 w-32 h-32 opacity-10" />
+        <h2 class="text-2xl font-semibold relative z-10">Messages</h2>
+      </div>
+
+      <!-- Conversion Card -->
+      <div class="relative bg-gradient-to-br from-cyan-700 to-cyan-900 rounded-xl p-8 overflow-hidden text-white shadow-lg hover:scale-105 transition-transform cursor-pointer h-48">
+        <img src="https://img.icons8.com/ios-filled/100/ffffff/process.png" alt="Conversion Icon" class="absolute top-4 right-4 w-32 h-32 opacity-10" />
+        <h2 class="text-2xl font-semibold relative z-10">Conversion</h2>
+      </div>
+
+      <!-- Activity Log Card -->
+      <div class="relative bg-gradient-to-br from-purple-700 to-purple-900 rounded-xl p-8 overflow-hidden text-white shadow-lg hover:scale-105 transition-transform cursor-pointer h-48">
+        <img src="https://img.icons8.com/ios-filled/100/ffffff/activity-history.png" alt="Activity Log Icon" class="absolute top-4 right-4 w-32 h-32 opacity-10" />
+        <h2 class="text-2xl font-semibold relative z-10">Activity Log</h2>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
