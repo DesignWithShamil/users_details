@@ -61,11 +61,11 @@ def edit(request, pk):
     print(instance)
 
     if request.method == "POST":
-        ifid = request.POST.get('ifid')
+        ifid = int(request.POST.get('ifid'))
         name = request.POST.get('name').strip().upper()
         no = int(request.POST.get('mobileno'))
 
-        if  instance.ifid == ifid and instance.name == name and instance.mobileno == no:
+        if instance.ifid == ifid and instance.name == name and instance.mobileno == no:
             messages.error(request, "No changes were made.")
         else:
             instance.ifid = ifid
