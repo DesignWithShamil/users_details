@@ -3,7 +3,7 @@ import pandas as pd
 from django.shortcuts import render
 
 
-def impor(request):
+def imp(request):
     employees = []
 
     if request.method == "POST" and request.FILES.get("myfile"):
