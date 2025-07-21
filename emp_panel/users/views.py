@@ -105,8 +105,7 @@ def impor(request):
         added = 0
         skipped = 0
         invalid_numbers = 0
-        invalid_ifids = []  # collect ifids with invalid mobile numbers
-
+        invalid_ifids = [] 
         for _, row in df.iterrows():
             try:
                 ifid = int(row['ifid'])

@@ -1,6 +1,9 @@
+from pyexpat.errors import messages
 from django.http import JsonResponse
 import pandas as pd
 from django.shortcuts import render
+
+from . models import employee_groups
 
 
 def imp(request):
@@ -97,6 +100,128 @@ def imp(request):
 
             final_employees.append(emp_result)
 
-        return render(request, "index.html", {"employees": final_employees})
+        return render(request, "imp.html", {"employees": final_employees})
 
-    return render(request, "index.html")
+    return render(request, "imp.html")
+
+from django.contrib import messages
+import pandas as pd
+
+def conversion_excel(request):
+    if request.method == "POST":
+        new_file = request.FILES['conversion']
+        xl = pd.read_excel(new_file, sheet_name=None)
+
+        added = 0  
+        skipped = 0
+
+        for sheet_name, df in xl.items():
+            for index, row in df.iterrows():
+                try:
+                    ifid = row['IFID']
+                    name = str(row['NAME']).strip().upper()
+                    entity = sheet_name.upper().strip().replace(" ", "")
+
+                    exists = employee_groups.objects.filter(ifid=ifid).exists()
+
+                    if exists:
+                        skipped += 1
+                    else:
+                        employee_groups.objects.create(
+                            name=name,
+                            ifid=ifid,
+                            entity=entity
+                        )
+                        added += 1
+
+                except Exception as e:
+                    print(f"Error processing row: {row} -> {e}")
+                    skipped += 1
+
+        
+        msg = f"{added} rows uploaded successfully!"
+        if skipped:
+            msg += f" {skipped} duplicate rows were skipped."
+
+        messages.success(request, msg)
+
+    infolksgroup_list = employee_groups.objects.filter(entity='INFOLKSGROUP').order_by('ifid')
+    medrays_list = employee_groups.objects.filter(entity='MEDRAYS').order_by('ifid')
+    webfolks_list = employee_groups.objects.filter(entity='WEBFOLKS').order_by('ifid')
+    infolks_list = employee_groups.objects.filter(entity='INFOLKS').order_by('ifid')
+    employee_list = employee_groups.objects.all().order_by('ifid')
+
+    return render(request, 'imp.html', {
+        'employee_list': employee_list,
+        'infolks_list': infolks_list,
+        'webfolks_list': webfolks_list,
+        'infolksgroup_list': infolksgroup_list,
+        'medrays_list': medrays_list
+    })
+def emp_details(request):
+   
+
+    infolksgroup_list = employee_groups.objects.filter(entity='INFOLKSGROUP').order_by('ifid')
+    medrays_list = employee_groups.objects.filter(entity='MEDRAYS').order_by('ifid')
+    webfolks_list = employee_groups.objects.filter(entity='WEBFOLKS').order_by('ifid')
+    infolks_list = employee_groups.objects.filter(entity='INFOLKS').order_by('ifid')
+    employee_list = employee_groups.objects.all().order_by('ifid')
+
+    return render(request, 'imp.html', {
+        'employee_list': employee_list,
+        'infolks_list': infolks_list,
+        'webfolks_list': webfolks_list,
+        'infolksgroup_list': infolksgroup_list,
+        'medrays_list': medrays_list
+    })
+
+def delete_conv(request, pk):
+    instance = employee_groups.objects.get(pk=pk)
+    name = instance.name  
+    instance.delete()
+    messages.success(request, f"employee '{name}' deleted successfully.")
+    infolksgroup_list = employee_groups.objects.filter(entity='INFOLKSGROUP').order_by('ifid')
+    medrays_list = employee_groups.objects.filter(entity='MEDRAYS').order_by('ifid')
+    webfolks_list = employee_groups.objects.filter(entity='WEBFOLKS').order_by('ifid')
+    infolks_list = employee_groups.objects.filter(entity='INFOLKS').order_by('ifid')
+    employee_list = employee_groups.objects.all().order_by('ifid')
+
+    return render(request, 'imp.html', {
+        'employee_list': employee_list,
+        'infolks_list': infolks_list,
+        'webfolks_list': webfolks_list,
+        'infolksgroup_list': infolksgroup_list,
+        'medrays_list': medrays_list
+    })
+
+def edit_conv(request, pk):
+    instance = employee_groups.objects.get(pk=pk)
+    print(instance)
+
+    if request.method == "POST":
+        ifid = int(request.POST.get('ifid'))
+        name = request.POST.get('name').strip().upper()
+        no = request.POST.get('entity')
+
+        if instance.ifid == ifid and instance.name == name and instance.entity == no:
+            messages.error(request, "No changes were made.")
+        else:
+            instance.ifid = ifid
+            instance.name = name
+            instance.entity = no
+            instance.save()
+            messages.success(request, "Employee updated successfully!")
+
+    infolksgroup_list = employee_groups.objects.filter(entity='INFOLKSGROUP').order_by('ifid')
+    medrays_list = employee_groups.objects.filter(entity='MEDRAYS').order_by('ifid')
+    webfolks_list = employee_groups.objects.filter(entity='WEBFOLKS').order_by('ifid')
+    infolks_list = employee_groups.objects.filter(entity='INFOLKS').order_by('ifid')
+    employee_list = employee_groups.objects.all().order_by('ifid')
+
+    return render(request, 'imp.html', {
+        'employee_list': employee_list,
+        'infolks_list': infolks_list,
+        'webfolks_list': webfolks_list,
+        'infolksgroup_list': infolksgroup_list,
+        'medrays_list': medrays_list
+    })
