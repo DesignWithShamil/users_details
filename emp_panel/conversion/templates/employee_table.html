@@ -1,3 +1,4 @@
+
 <style>
   /* ✅ This is required for :target modal trick */
   #modal-aded:target {
@@ -14,24 +15,25 @@
       <th class="px-4 py-2 text-left">NAME</th>
      
      <th class="py-3 px-4 text-left">
-  <a href="#modal-aded">
+  <a href="#modal-aded" id="" >
     <button class="bg-blue-500 text-white px-4 py-2 rounded">Add +</button>
   </a>
    
 </th>
-     <th><button 
-    id="delete-selected"
-    class="bg-yellow-400 text-white px-4 py-2 rounded" 
-  >
-    DELETE SELECTED
-  </button></th>
+    <th>
+       <button 
+  id="delete"
+  class="bg-yellow-400 text-white px-4 py-2 rounded hidden" >
+  DELETE SELECTED
+</button>
+      </th>
 </tr>
 
   </thead>
   <tbody>
     {% for emp in list %}
     <tr class="border-b">
-    <td><input type="checkbox" id="row-checkbox-{{ emp.ifid }}" onclick="singlerowdlt({{ emp.ifid }})">
+    <td><input type="checkbox" id="row-checkbox-{{ emp.ifid }}" onclick="singlerowdlt({{ emp.ifid }})" class="checklist">
 </td>
       <td>{{ forloop.counter }}</td>
       <td class="px-4 py-2">{{ emp.ifid }}</td>
@@ -73,9 +75,12 @@
       </td>
       <td>
         <a href="#modal-deletee-{{ emp.id }}">
-         <button class="text-red-600 hover:text-red-900"style="opacity: 0.5;" id="singledlt-{{ emp.ifid }}">
+         <button 
+  id="singledlt-{{ emp.ifid }}" 
+  class="text-red-600 hover:text-red-900 hidden">
   Delete
 </button>
+
 
         </a>
         <div id="modal-deletee-{{ emp.id }}" class="modal hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -122,26 +127,30 @@
 function singlerowdlt(ifid) {
   var checkBox = document.getElementById("row-checkbox-" + ifid);
   var singledlt = document.getElementById("singledlt-" + ifid);
-  const checkboxes = document.querySelectorAll(".row-checkbox");
-  const deleteSelectedBtn = document.getElementById("delete-selected");
+  const checkboxes = document.querySelectorAll(".checklist");
+  const deleteSelectedBtn = document.getElementById("delete");
 
   if (checkBox.checked) {
-  singledlt.style.opacity = "1";   
-} else {
-  singledlt.style.opacity = "0.5"; 
-}
-let anyChecked = false;
+    singledlt.classList.remove("hidden");
+  } else {
+    singledlt.classList.add("hidden");
+  }
+
+  let checkedCount = 0;
   checkboxes.forEach(cb => {
     if (cb.checked) {
-      anyChecked = true;
+      checkedCount++;
     }
   });
 
- if (anyChecked) {
-    deleteSelectedBtn.style.display = "inline-block";
+  // Show/hide bulk delete button
+  if (checkedCount >= 2) {
+    deleteSelectedBtn.classList.remove("hidden");
   } else {
-    deleteSelectedBtn.style.display = "none";
+    deleteSelectedBtn.classList.add("hidden");
   }
 }
+
+
 </script>
 
